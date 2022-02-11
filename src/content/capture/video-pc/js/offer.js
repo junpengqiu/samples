@@ -35,10 +35,7 @@ websocket.onmessage = event =>
    if (result.type == "registered") {
      sessionID = result.sessionID;
      document.getElementById("sessionID").textContent = sessionID;
-
-     if (document.getElementById("start-offer").onclick) {
-      document.getElementById("start-offer").disabled = false;
-     }
+     document.getElementById("create-stream").disabled = false;
    } else if (result.type == "answerDesc") {
     // ws: listen for answer desc and set it as remote desc
     console.log(`Answer from pc2:
@@ -76,10 +73,15 @@ function maybeCreateStream() {
 
 // Video tag capture must be set up after video tracks are enumerated.
 leftVideo.oncanplay = maybeCreateStream;
-if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
-  // Video is already ready to play, call maybeCreateStream in case oncanplay
-  // fired before we registered the event handler.
-  maybeCreateStream();
+
+document.getElementById("create-stream").onclick = () => {
+  if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
+    // Video is already ready to play, call maybeCreateStream in case oncanplay
+    // fired before we registered the event handler.
+    maybeCreateStream();
+  } else {
+    window.alert(`video is still in readyState of ${leftVideo.readyState}`);
+  }
 }
 
 leftVideo.play();
@@ -125,13 +127,7 @@ ${desc.sdp}`);
   toPass.type = "offerDesc";
   toPass.desc = desc;
 
-  if(websocket){
-    websocket.send(JSON.stringify(toPass));
-  } else {
-    document.getElementById("start-offer").onclick = () => {
-      websocket.send(JSON.stringify(toPass));
-    }
-  }
+  websocket.send(JSON.stringify(toPass));
 
   // Since the 'remote' side has no media stream we need
   // to pass in the right constraints in order for it to
