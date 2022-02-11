@@ -36,8 +36,25 @@ websocket.onmessage = event =>
    let result = JSON.parse(event.data);
    
    if (result.type == "registered") {
-     let sessionID = result.sessionID;
+     sessionID = result.sessionID;
      document.getElementById("sessionID").textContent = sessionID;
+
+     if (document.getElementById("start-offer").onclick) {
+      document.getElementById("start-offer").disabled = false;
+     }
+   } else if (result.type == "answerDesc") {
+    // ws: listen for answer desc and set it as remote desc
+    console.log(`Answer from pc2:
+      ${desc.sdp}`);
+    console.log('pc1 setRemoteDescription start');
+    pc1.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
+   } else if (result.type =="candidate") {
+     // ws: listen for ice cand from pc2 and add it
+     pc1.addIceCandidate(event.candidate)
+      .then(
+          () => onAddIceCandidateSuccess(pc1),
+          err => onAddIceCandidateError(pc1, err)
+      );
    }
 };
 
@@ -85,7 +102,6 @@ function call() {
   console.log('Created local peer connection object pc1');
   pc1.onicecandidate = e => onIceCandidate(pc1, e);
   // pc2.onicecandidate = e => onIceCandidate(pc2, e);
-  // ws: listen for ice cand from pc2 and add it
   pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
 
   stream.getTracks().forEach(track => pc1.addTrack(track, stream));
@@ -107,7 +123,18 @@ ${desc.sdp}`);
   console.log('pc2 setRemoteDescription start');
   // pc2.setRemoteDescription(desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
   // pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
-  // ws: pass desc to pc2, wait for pc2 to set remote desc and create answer
+  // pass desc to pc2, wait for pc2 to set remote desc and create answer
+  let toPass = {};
+  toPass.type = "offerDesc";
+  toPass.desc = desc;
+
+  if(websocket){
+    websocket.send(JSON.stringify(toPass));
+  } else {
+    document.getElementById("start-offer").onclick = () => {
+      websocket.send(JSON.stringify(toPass));
+    }
+  }
 
   // Since the 'remote' side has no media stream we need
   // to pass in the right constraints in order for it to
@@ -126,23 +153,11 @@ function onSetSessionDescriptionError(error) {
   console.log(`Failed to set session description: ${error.toString()}`);
 }
 
-// function onCreateAnswerSuccess(desc) {
-//   console.log(`Answer from pc2:
-// ${desc.sdp}`);
-//   console.log('pc2 setLocalDescription start');
-//   pc2.setLocalDescription(desc, () => onSetLocalSuccess(pc2), onSetSessionDescriptionError);
-//   console.log('pc1 setRemoteDescription start');
-//   pc1.setRemoteDescription(desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
-//   ws: listen for answer desc and set it as remote desc
-// }
-
 function onIceCandidate(pc, event) {
-  // getOtherPc(pc).addIceCandidate(event.candidate)
-  //     .then(
-  //         () => onAddIceCandidateSuccess(pc),
-  //         err => onAddIceCandidateError(pc, err)
-  //     );
-  // ws: pass event.candidate to pc2, and let it add it
+  let toPass = {};
+  toPass.type = "candidate";
+  toPass.candidate = event.candidate;
+  websocket.send(JSON.stringify(toPass));
   console.log(`ICE candidate: 
 ${event.candidate ?
     event.candidate.candidate : '(null)'}`);
@@ -164,5 +179,5 @@ function onIceStateChange(pc, event) {
 }
 
 function getName(pc) {
-  return (pc === pc1) ? 'pc1' : 'pc2';
+  return 'pc1';
 }
