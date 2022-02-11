@@ -72,7 +72,7 @@ function maybeCreateStream() {
 }
 
 // Video tag capture must be set up after video tracks are enumerated.
-leftVideo.oncanplay = maybeCreateStream;
+// leftVideo.oncanplay = maybeCreateStream;
 
 document.getElementById("create-stream").onclick = () => {
   if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
