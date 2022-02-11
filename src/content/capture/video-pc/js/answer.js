@@ -20,6 +20,7 @@ const sessionIDInput = document.getElementById("session-id");
 const sessionIDSubmit = document.getElementById("submit-session-id");
 
 sessionIDSubmit.onclick = () => {
+  sessionIDInput.value = sessionIDInput.value.toUpperCase();
   let inp = sessionIDInput.value;
 
   if (inp.length == 0) {
@@ -28,7 +29,7 @@ sessionIDSubmit.onclick = () => {
   }
 
   let toPass = {};
-  toPass.type = "submit-session-id";
+  toPass.type = "session-id-submit";
   toPass.sessionID = inp;
   sessionIDInput.disabled = true;
   sessionIDSubmit.disabled = true;
@@ -45,6 +46,7 @@ websocket.onmessage = event => {
   
   if (result.type == "session-id-confirm") {
     sessionID = result.sessionID;
+    call();
   } else if (result.type == "session-id-fail") {
     sessionIDInput.value = "";
     sessionIDInput.disabled = false;
