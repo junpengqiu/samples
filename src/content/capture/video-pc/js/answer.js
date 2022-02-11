@@ -59,7 +59,7 @@ websocket.onmessage = event => {
    pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
   } else if (result.type =="candidate") {
     // ws: listen for ice cand from pc2 and add it
-    pc2.addIceCandidate(event.candidate)
+    pc2.addIceCandidate(result.candidate)
      .then(
          () => onAddIceCandidateSuccess(pc2),
          err => onAddIceCandidateError(pc2, err)
