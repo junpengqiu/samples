@@ -54,7 +54,7 @@ websocket.onmessage = event => {
   } else if (result.type == "offerDesc") {
    // ws: listen for offer desc and set it as remote desc
    console.log(`Answer from pc2:
-     ${desc.sdp}`);
+     ${result.desc.sdp}`);
    console.log('pc2 setRemoteDescription start');
    pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
   } else if (result.type =="candidate") {
