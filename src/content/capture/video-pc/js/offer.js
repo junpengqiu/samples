@@ -20,9 +20,6 @@ const offerOptions = {
 
 let startTime;
 
-const WSROOT = "wss://junpengqiu.com/qrgank/";
-const websocket = new WebSocket(WSROOT);
-
 websocket.onopen = () =>
 {
   console.log('ws init');

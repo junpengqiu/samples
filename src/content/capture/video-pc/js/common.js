@@ -15,3 +15,6 @@ const servers = {
   ],
   iceCandidatePoolSize: 10,
 };
+
+const WSROOT = "wss://junpengqiu.com/qrgank/";
+const websocket = new WebSocket(WSROOT);
