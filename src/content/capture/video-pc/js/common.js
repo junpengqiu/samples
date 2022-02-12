@@ -24,7 +24,7 @@ const websocket = new WebSocket(WSROOT);
 
 function onAddIceCandidateError(pc, error, candidate) {
   console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
-  console.log(`candidate json: ${candidate}`)
+  console.log(`candidate json: ${JSON.stringify(candidate)}`)
 }
 
 function getStunChoice() {
