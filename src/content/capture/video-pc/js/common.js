@@ -7,7 +7,7 @@
 */
 
 'use strict';
-const servers = {
+const serversGoogleStun = {
   iceServers: [
     {
       urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
@@ -16,5 +16,29 @@ const servers = {
   iceCandidatePoolSize: 10,
 };
 
+const serversEmpty = {
+};
+
 const WSROOT = "wss://junpengqiu.com/qrgank/";
 const websocket = new WebSocket(WSROOT);
+
+function getStunChoice() {
+  let choice = document.querySelector('input[name="stun-choice"]:checked').value;
+  return choice == "stun-google" ? serversGoogleStun : serversEmpty;
+}
+
+function xableStunChoice(enable) {
+  let radioButtons = document.querySelectorAll('input[name="stun-choice"]');
+  for (let idx = 0; idx < radioButtons.length; idx++) {
+    let radioButton = radioButtons[idx];
+    radioButton.disabled = !enable;
+  }
+}
+
+function enableStunChoice() {
+  xableStunChoice(true);
+}
+
+function disableStunChoice() {
+  xableStunChoice(false);
+}

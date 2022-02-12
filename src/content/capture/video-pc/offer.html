@@ -43,6 +43,19 @@
         <p>This browser does not support the video element.</p>
     </video>
 
+    <div>
+        <h3>Select your stun server:</h3>
+    </div>
+    <div>
+        <input type="radio" id="stun-google"
+            name="stun-choice" value="google">
+        <label for="stun-google">GG</label>
+
+        <input type="radio" id="stun-empty"
+            name="stun-choice" value="empty" checked>
+        <label for="stun-empty">Empty</label>
+    </div>
+
     <p>Session ID:</p>
     <p id="sessionID"> </p>
     <button id="create-stream" disabled> Create Stream </button>

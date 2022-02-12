@@ -46,6 +46,7 @@ websocket.onmessage = event => {
   
   if (result.type == "session-id-confirm") {
     sessionID = result.sessionID;
+    disableStunChoice();
     call();
   } else if (result.type == "session-id-fail") {
     sessionIDInput.value = "";
@@ -92,7 +93,7 @@ rightVideo.onresize = () => {
 function call() {
   console.log('Starting call');
   startTime = window.performance.now();
-  pc2 = new RTCPeerConnection(servers);
+  pc2 = new RTCPeerConnection(getStunChoice());
   console.log('Created remote peer connection object pc2');
   pc2.onicecandidate = e => onIceCandidate(pc2, e);
   pc2.oniceconnectionstatechange = e => onIceStateChange(pc2, e);

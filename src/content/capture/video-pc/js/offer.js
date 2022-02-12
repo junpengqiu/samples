@@ -78,6 +78,7 @@ document.getElementById("create-stream").onclick = () => {
   if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
     // Video is already ready to play, call maybeCreateStream in case oncanplay
     // fired before we registered the event handler.
+    disableStunChoice();
     maybeCreateStream();
   } else {
     window.alert(`video is still in readyState of ${leftVideo.readyState}`);
@@ -97,7 +98,7 @@ function call() {
   if (audioTracks.length > 0) {
     console.log(`Using audio device: ${audioTracks[0].label}`);
   }
-  pc1 = new RTCPeerConnection(servers);
+  pc1 = new RTCPeerConnection(getStunChoice());
   console.log('Created local peer connection object pc1');
   pc1.onicecandidate = e => onIceCandidate(pc1, e);
   // pc2.onicecandidate = e => onIceCandidate(pc2, e);
