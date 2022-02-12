@@ -22,6 +22,11 @@ const serversEmpty = {
 const WSROOT = "wss://junpengqiu.com/qrgank/";
 const websocket = new WebSocket(WSROOT);
 
+function onAddIceCandidateError(pc, error, candidate) {
+  console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+  console.log(`candidate json: ${candidate}`)
+}
+
 function getStunChoice() {
   let choice = document.querySelector('input[name="stun-choice"]:checked').value;
   return choice == "stun-google" ? serversGoogleStun : serversEmpty;

@@ -64,7 +64,7 @@ websocket.onmessage = event => {
     pc2.addIceCandidate(result.candidate)
      .then(
          () => onAddIceCandidateSuccess(pc2),
-         err => onAddIceCandidateError(pc2, err)
+         err => onAddIceCandidateError(pc2, err, result.candidate)
      );
   }
 };

@@ -47,7 +47,7 @@ websocket.onmessage = event =>
      pc1.addIceCandidate(result.candidate)
       .then(
           () => onAddIceCandidateSuccess(pc1),
-          err => onAddIceCandidateError(pc1, err)
+          err => onAddIceCandidateError(pc1, err, result.candidate)
       );
    }
 };
@@ -160,10 +160,6 @@ ${event.candidate ?
 
 function onAddIceCandidateSuccess(pc) {
   console.log(`${getName(pc)} addIceCandidate success`);
-}
-
-function onAddIceCandidateError(pc, error) {
-  console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
 }
 
 function onIceStateChange(pc, event) {
