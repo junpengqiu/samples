@@ -144,7 +144,7 @@ ${desc.sdp}`);
 function onIceCandidate(pc, event) {
   getOtherPc(pc).addIceCandidate(event.candidate)
       .then(
-          () => onAddIceCandidateSuccess(pc),
+          () => onAddIceCandidateSuccess(pc, event.candidate),
           err => onAddIceCandidateError(pc, err)
       );
   console.log(`${getName(pc)} ICE candidate: 
@@ -152,8 +152,9 @@ ${event.candidate ?
     event.candidate.candidate : '(null)'}`);
 }
 
-function onAddIceCandidateSuccess(pc) {
+function onAddIceCandidateSuccess(pc, candidate) {
   console.log(`${getName(pc)} addIceCandidate success`);
+  console.log(`candidate: ${candidate}`);
 }
 
 function onAddIceCandidateError(pc, error) {
