@@ -154,7 +154,7 @@ ${event.candidate ?
 
 function onAddIceCandidateSuccess(pc, candidate) {
   console.log(`${getName(pc)} addIceCandidate success`);
-  console.log(`candidate: ${candidate}`);
+  console.log(`candidate: ${JSON.stringify(candidate)}`);
 }
 
 function onAddIceCandidateError(pc, error) {
