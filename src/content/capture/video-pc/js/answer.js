@@ -46,14 +46,15 @@ websocket.onmessage = event => {
   
   if (result.type == "session-id-confirm") {
     sessionID = result.sessionID;
-    disableStunChoice();
-    call();
+    // disableStunChoice();
+    // call();
   } else if (result.type == "session-id-fail") {
     sessionIDInput.value = "";
     sessionIDInput.disabled = false;
     sessionIDSubmit.disabled = false;
   } else if (result.type == "offerDesc") {
    // ws: listen for offer desc and set it as remote desc
+   call(result.stun);
    console.log(`Answer from pc2:
      ${result.desc.sdp}`);
    console.log('pc2 setRemoteDescription start');
@@ -90,10 +91,10 @@ rightVideo.onresize = () => {
   }
 };
 
-function call() {
+function call(stun) {
   console.log('Starting call');
   startTime = window.performance.now();
-  pc2 = new RTCPeerConnection(getStunChoice());
+  pc2 = new RTCPeerConnection(stun);
   console.log('Created remote peer connection object pc2');
   pc2.onicecandidate = e => onIceCandidate(pc2, e);
   pc2.oniceconnectionstatechange = e => onIceStateChange(pc2, e);

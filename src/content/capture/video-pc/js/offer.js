@@ -127,6 +127,7 @@ ${desc.sdp}`);
   let toPass = {};
   toPass.type = "offerDesc";
   toPass.desc = desc;
+  toPass.stun = getStunChoice();
 
   websocket.send(JSON.stringify(toPass));
 
