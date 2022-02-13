@@ -52,12 +52,7 @@ websocket.onmessage = event =>
    }
 };
 
-function screenShareStreamSetup() {
-  stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-  leftVideo.srcObject = stream;
-}
-
-function maybeCreateStream() {
+async function maybeCreateStream() {
   if (stream) {
     return;
   }
@@ -77,7 +72,7 @@ function maybeCreateStream() {
 // Video tag capture must be set up after video tracks are enumerated.
 // leftVideo.oncanplay = maybeCreateStream;
 
-document.getElementById("create-stream").onclick = () => {
+document.getElementById("create-stream").onclick = async () => {
   if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
     // Video is already ready to play, call maybeCreateStream in case oncanplay
     // fired before we registered the event handler.
@@ -90,9 +85,10 @@ document.getElementById("create-stream").onclick = () => {
 
 leftVideo.play();
 
-function call() {
+async function call() {
   console.log('Starting call');
-  screenShareStreamSetup();
+  stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+  leftVideo.srcObject = stream;
   startTime = window.performance.now();
   const videoTracks = stream.getVideoTracks();
   const audioTracks = stream.getAudioTracks();
