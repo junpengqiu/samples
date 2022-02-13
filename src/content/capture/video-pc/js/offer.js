@@ -12,6 +12,7 @@ const leftVideo = document.getElementById('leftVideo');
 let stream;
 var sessionID;
 var calledAtLeastOnce = false;
+var senders = [];
 
 let pc1;
 const offerOptions = {
@@ -60,10 +61,7 @@ websocket.onmessage = event =>
    }
 };
 
-async function maybeCreateStream() {
-  if (stream) {
-    return;
-  }
+async function createStream() {
   if (leftVideo.captureStream) {
     console.log('Captured stream from leftVideo with captureStream',
         stream);
@@ -82,16 +80,12 @@ async function maybeCreateStream() {
 
 document.getElementById("create-stream").onclick = async () => {
   disableStunChoice();
-  maybeCreateStream();
+  createStream();
 }
 
 leftVideo.play();
 
 async function call() {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-    leftVideo.srcObject = null;
-  }
   console.log('Starting call');
   stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
   leftVideo.srcObject = stream;
@@ -111,15 +105,20 @@ async function call() {
     // pc2.onicecandidate = e => onIceCandidate(pc2, e);
     pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
 
-    stream.getTracks().forEach(track => pc1.addTrack(track, stream));
+    stream.getTracks().forEach(track => {
+      senders.push(pc1.addTrack(track, stream));
+    });
     console.log('Added local stream to pc1');
 
     console.log('pc1 createOffer start');
     pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
     calledAtLeastOnce = true;
   } else {
-    stream.getTracks().forEach(track => pc1.addTrack(track, stream));
-    console.log('Added new local stream to pc1');
+    senders.forEach(sender => pc1.removeTrack(sender));
+    senders = [];
+    stream.getTracks().forEach(track => {
+      senders.push(pc1.addTrack(track, stream));
+    });
   }
 }
 
