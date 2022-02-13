@@ -26,7 +26,7 @@ sessionIDSubmit.onclick = () => {
   if (inp.length == 0) {
     window.alert("session id cannot be empty");
     return;
-  }
+  } 
 
   let toPass = {};
   toPass.type = "session-id-submit";
@@ -39,6 +39,14 @@ sessionIDSubmit.onclick = () => {
 websocket.onopen = () => {
   sessionIDInput.disabled = false;
   sessionIDSubmit.disabled = false;
+};
+
+websocket.onerror = (event) => {
+  document.getElementById("log").textContent = event;
+};
+
+websocket.onclose = () => {
+  document.getElementById("log").textContent = "disconnected from signal server";
 };
 
 websocket.onmessage = event => {
