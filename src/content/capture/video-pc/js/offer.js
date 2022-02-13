@@ -11,6 +11,7 @@
 const leftVideo = document.getElementById('leftVideo');
 let stream;
 var sessionID;
+var calledAtLeastOnce = false;
 
 let pc1;
 const offerOptions = {
@@ -87,6 +88,10 @@ document.getElementById("create-stream").onclick = async () => {
 leftVideo.play();
 
 async function call() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    leftVideo.srcObject = null;
+  }
   console.log('Starting call');
   stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
   leftVideo.srcObject = stream;
@@ -99,17 +104,23 @@ async function call() {
   if (audioTracks.length > 0) {
     console.log(`Using audio device: ${audioTracks[0].label}`);
   }
-  pc1 = new RTCPeerConnection(getStunChoice());
-  console.log('Created local peer connection object pc1');
-  pc1.onicecandidate = e => onIceCandidate(pc1, e);
-  // pc2.onicecandidate = e => onIceCandidate(pc2, e);
-  pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
+  if(!calledAtLeastOnce) {
+    pc1 = new RTCPeerConnection(getStunChoice());
+    console.log('Created local peer connection object pc1');
+    pc1.onicecandidate = e => onIceCandidate(pc1, e);
+    // pc2.onicecandidate = e => onIceCandidate(pc2, e);
+    pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
 
-  stream.getTracks().forEach(track => pc1.addTrack(track, stream));
-  console.log('Added local stream to pc1');
+    stream.getTracks().forEach(track => pc1.addTrack(track, stream));
+    console.log('Added local stream to pc1');
 
-  console.log('pc1 createOffer start');
-  pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
+    console.log('pc1 createOffer start');
+    pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
+    calledAtLeastOnce = true;
+  } else {
+    stream.getTracks().forEach(track => pc1.addTrack(track, stream));
+    console.log('Added new local stream to pc1');
+  }
 }
 
 function onCreateSessionDescriptionError(error) {
