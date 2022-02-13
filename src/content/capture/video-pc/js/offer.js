@@ -28,6 +28,13 @@ websocket.onopen = () =>
   }));
 };
 
+var displayMediaOptions = {
+  video: {
+    cursor: "always"
+  },
+  audio: false
+};
+
 websocket.onmessage = event =>
 {
    let result = JSON.parse(event.data);
