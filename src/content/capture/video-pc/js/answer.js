@@ -133,7 +133,7 @@ ${desc.sdp}`);
   pc2.setLocalDescription(desc, () => onSetLocalSuccess(pc2), onSetSessionDescriptionError);
   
   let toPass = {};
-  toPass.type = "offerDesc";
+  toPass.type = "answerDesc";
   toPass.desc = desc;
   websocket.send(JSON.stringify(toPass));
 }
