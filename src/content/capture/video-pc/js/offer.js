@@ -52,17 +52,20 @@ websocket.onmessage = event =>
    }
 };
 
+function screenShareStreamSetup() {
+  stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+  leftVideo.srcObject = stream;
+}
+
 function maybeCreateStream() {
   if (stream) {
     return;
   }
   if (leftVideo.captureStream) {
-    stream = leftVideo.captureStream();
     console.log('Captured stream from leftVideo with captureStream',
         stream);
     call();
   } else if (leftVideo.mozCaptureStream) {
-    stream = leftVideo.mozCaptureStream();
     console.log('Captured stream from leftVideo with mozCaptureStream()',
         stream);
     call();
@@ -89,6 +92,7 @@ leftVideo.play();
 
 function call() {
   console.log('Starting call');
+  screenShareStreamSetup();
   startTime = window.performance.now();
   const videoTracks = stream.getVideoTracks();
   const audioTracks = stream.getAudioTracks();
