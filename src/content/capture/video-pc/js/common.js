@@ -16,6 +16,16 @@ const serversGoogleStun = {
   iceCandidatePoolSize: 10,
 };
 
+const serversStunOrg = {
+  iceServers: [
+    {
+      urls: ['stun:stun.stunprotocol.org:3478'],
+    },
+  ],
+  iceCandidatePoolSize: 10,
+};
+
+
 const serversEmpty = {
 };
 
@@ -29,7 +39,13 @@ function onAddIceCandidateError(pc, error, candidate) {
 
 function getStunChoice() {
   let choice = document.querySelector('input[name="stun-choice"]:checked').value;
-  return choice == "stun-google" ? serversGoogleStun : serversEmpty;
+  if (choice == "google") {
+    return serversGoogleStun;
+  }else if (choice == "stunorg"){
+    return serversStunOrg;
+  } else {
+    return serversEmpty;
+  }
 }
 
 function xableStunChoice(enable) {
