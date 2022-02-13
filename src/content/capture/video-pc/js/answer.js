@@ -54,11 +54,13 @@ websocket.onmessage = event => {
     sessionIDSubmit.disabled = false;
   } else if (result.type == "offerDesc") {
    // ws: listen for offer desc and set it as remote desc
-   call(result.stun);
-   console.log(`Answer from pc2:
-     ${result.desc.sdp}`);
-   console.log('pc2 setRemoteDescription start');
-   pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
+    call(result.stun);
+    console.log(`offer from pc1:
+      ${result.desc.sdp}`);
+    console.log('pc2 setRemoteDescription start');
+    pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
+    console.log('pc2 createAnswer start');
+    pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
   } else if (result.type =="candidate") {
     // ws: listen for ice cand from pc2 and add it
     pc2.addIceCandidate(result.candidate)
