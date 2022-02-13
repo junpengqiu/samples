@@ -114,11 +114,8 @@ async function call() {
     pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
     calledAtLeastOnce = true;
   } else {
-    senders.forEach(sender => pc1.removeTrack(sender));
-    senders = [];
-    stream.getTracks().forEach(track => {
-      senders.push(pc1.addTrack(track, stream));
-    });
+    let newTrack = stream.getTracks()[0]
+    senders[0].replaceTrack(newTrack);
   }
 }
 
