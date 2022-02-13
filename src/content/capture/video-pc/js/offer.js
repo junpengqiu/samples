@@ -73,14 +73,8 @@ async function maybeCreateStream() {
 // leftVideo.oncanplay = maybeCreateStream;
 
 document.getElementById("create-stream").onclick = async () => {
-  if (leftVideo.readyState >= 3) { // HAVE_FUTURE_DATA
-    // Video is already ready to play, call maybeCreateStream in case oncanplay
-    // fired before we registered the event handler.
-    disableStunChoice();
-    maybeCreateStream();
-  } else {
-    window.alert(`video is still in readyState of ${leftVideo.readyState}`);
-  }
+  disableStunChoice();
+  maybeCreateStream();
 }
 
 leftVideo.play();
