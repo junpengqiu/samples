@@ -52,11 +52,7 @@ var completeWS = function() {
   websocket.onmessage = event => {
     let result = JSON.parse(event.data);
     
-    if (result.type == "session-id-confirm") {
-      sessionID = result.sessionID;
-      // disableStunChoice();
-      // call();
-    } else if (result.type == "session-id-fail") {
+    if (result.type == "session-id-fail") {
       sessionIDInput.value = "";
       sessionIDInput.disabled = false;
       sessionIDSubmit.disabled = false;
