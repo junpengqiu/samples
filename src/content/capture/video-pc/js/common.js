@@ -30,7 +30,8 @@ const serversEmpty = {
 };
 
 const WSROOT = "wss://junpengqiu.com/qrgank/";
-const websocket = new WebSocket(WSROOT);
+var websocket = new WebSocket(WSROOT);
+var sessionID;
 
 function onAddIceCandidateError(pc, error, candidate) {
   console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
@@ -63,3 +64,19 @@ function enableStunChoice() {
 function disableStunChoice() {
   xableStunChoice(false);
 }
+
+function submitSessionID() {
+  let toPass = {};
+  toPass.type = "session-id-submit";
+  toPass.sessionID = sessionID;
+  sessionIDInput.disabled = true;
+  sessionIDSubmit.disabled = true;
+  websocket.send(JSON.stringify(toPass));
+}
+
+websocket.onclose = () => {
+  console.log('socket closed, resubmitting sessionID');
+  websocket = new WebSocket(WSROOT);
+  submitSessionID();
+  console.log('submit success');
+};

@@ -10,7 +10,6 @@
 
 const leftVideo = document.getElementById('leftVideo');
 let stream;
-var sessionID;
 var calledAtLeastOnce = false;
 var senders = [];
 

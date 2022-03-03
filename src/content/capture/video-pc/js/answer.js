@@ -15,25 +15,18 @@ let pc2;
 
 let startTime;
 
-var sessionID;
 const sessionIDInput = document.getElementById("session-id");
 const sessionIDSubmit = document.getElementById("submit-session-id");
 
 sessionIDSubmit.onclick = () => {
   sessionIDInput.value = sessionIDInput.value.toUpperCase();
-  let inp = sessionIDInput.value;
+  sessionID = sessionIDInput.value;
 
-  if (inp.length == 0) {
+  if (sessionID == 0) {
     window.alert("session id cannot be empty");
     return;
   } 
-
-  let toPass = {};
-  toPass.type = "session-id-submit";
-  toPass.sessionID = inp;
-  sessionIDInput.disabled = true;
-  sessionIDSubmit.disabled = true;
-  websocket.send(JSON.stringify(toPass));
+  submitSessionID();
 };
 
 websocket.onopen = () => {
@@ -43,10 +36,6 @@ websocket.onopen = () => {
 
 websocket.onerror = (event) => {
   document.getElementById("log").textContent = event;
-};
-
-websocket.onclose = () => {
-  document.getElementById("log").textContent = "disconnected from signal server";
 };
 
 websocket.onmessage = event => {
