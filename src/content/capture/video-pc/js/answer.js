@@ -29,52 +29,57 @@ sessionIDSubmit.onclick = () => {
   submitSessionID();
 };
 
-websocket.onopen = () => {
-  sessionIDInput.disabled = false;
-  sessionIDSubmit.disabled = false;
-};
-
-websocket.onerror = (event) => {
-  document.getElementById("log").textContent = event;
-};
-
-websocket.onmessage = event => {
-  let result = JSON.parse(event.data);
-  
-  if (result.type == "session-id-confirm") {
-    sessionID = result.sessionID;
-    // disableStunChoice();
-    // call();
-  } else if (result.type == "session-id-fail") {
-    sessionIDInput.value = "";
+var completeWS = function() {
+  websocket = new WebSocket(WSROOT);
+  websocket.onopen = () => {
+    console.log('ws init');
     sessionIDInput.disabled = false;
     sessionIDSubmit.disabled = false;
-  } else if (result.type == "offerDesc") {
-   // ws: listen for offer desc and set it as remote desc
-    call(result.stun);
-    console.log(`offer from pc1:
-      ${result.desc.sdp}`);
-    console.log('pc2 setRemoteDescription start');
-    pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
-    console.log('pc2 createAnswer start');
-    pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
-  } else if (result.type =="candidate") {
-    // ws: listen for ice cand from pc2 and add it
-    pc2.addIceCandidate(result.candidate)
-     .then(
-         () => onAddIceCandidateSuccess(pc2),
-         err => onAddIceCandidateError(pc2, err, result.candidate)
-     );
+
+    if(sessionID) {
+      submitSessionID();
+    }
+  };
+
+  websocket.onerror = (event) => {
+    document.getElementById("log").textContent = event;
+  };
+
+  websocket.onclose = () => {
+    completeWS();
   }
-};
 
-websocket.onopen = () => {
-  console.log('ws init');
-  
-  sessionIDInput.disabled = false;
-  sessionIDSubmit.disabled = false;
+  websocket.onmessage = event => {
+    let result = JSON.parse(event.data);
+    
+    if (result.type == "session-id-confirm") {
+      sessionID = result.sessionID;
+      // disableStunChoice();
+      // call();
+    } else if (result.type == "session-id-fail") {
+      sessionIDInput.value = "";
+      sessionIDInput.disabled = false;
+      sessionIDSubmit.disabled = false;
+    } else if (result.type == "offerDesc") {
+    // ws: listen for offer desc and set it as remote desc
+      call(result.stun);
+      console.log(`offer from pc1:
+        ${result.desc.sdp}`);
+      console.log('pc2 setRemoteDescription start');
+      pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
+      console.log('pc2 createAnswer start');
+      pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
+    } else if (result.type =="candidate") {
+      // ws: listen for ice cand from pc2 and add it
+      pc2.addIceCandidate(result.candidate)
+      .then(
+          () => onAddIceCandidateSuccess(pc2),
+          err => onAddIceCandidateError(pc2, err, result.candidate)
+      );
+    }
+  };
 };
-
+completeWS();
 rightVideo.onloadedmetadata = () => {
   console.log(`Remote video videoWidth: ${rightVideo.videoWidth}px,  videoHeight: ${rightVideo.videoHeight}px`);
 };

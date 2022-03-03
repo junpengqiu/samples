@@ -21,14 +21,6 @@ const offerOptions = {
 
 let startTime;
 
-websocket.onopen = () =>
-{
-  console.log('ws init');
-  websocket.send(JSON.stringify({
-    type: "register"
-  }));
-};
-
 var displayMediaOptions = {
   video: {
     cursor: "always"
@@ -36,29 +28,49 @@ var displayMediaOptions = {
   audio: false
 };
 
-websocket.onmessage = event =>
-{
-   let result = JSON.parse(event.data);
-   
-   if (result.type == "registered") {
-     sessionID = result.sessionID;
-     document.getElementById("sessionID").textContent = sessionID;
-     document.getElementById("create-stream").disabled = false;
-   } else if (result.type == "answerDesc") {
-    // ws: listen for answer desc and set it as remote desc
-    console.log(`Answer from pc2:
-      ${result.desc.sdp}`);
-    console.log('pc1 setRemoteDescription start');
-    pc1.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
-   } else if (result.type =="candidate") {
-     // ws: listen for ice cand from pc2 and add it
-     pc1.addIceCandidate(result.candidate)
-      .then(
-          () => onAddIceCandidateSuccess(pc1),
-          err => onAddIceCandidateError(pc1, err, result.candidate)
-      );
-   }
+var completeWS = function() {
+  websocket = new WebSocket(WSROOT);
+  websocket.onopen = () => {
+    console.log('ws init');
+
+    if (sessionID) {
+      submitSessionID();
+    } else {
+      websocket.send(JSON.stringify({
+        type: "register"
+      }));
+    }
+  };
+
+  websocket.onmessage = event =>
+  {
+    let result = JSON.parse(event.data);
+    if (result.type == "registered") {
+      sessionID = result.sessionID;
+      document.getElementById("sessionID").textContent = sessionID;
+      document.getElementById("create-stream").disabled = false;
+    } else if (result.type == "answerDesc") {
+      // ws: listen for answer desc and set it as remote desc
+      console.log(`Answer from pc2:
+        ${result.desc.sdp}`);
+      console.log('pc1 setRemoteDescription start');
+      pc1.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
+    } else if (result.type =="candidate") {
+      // ws: listen for ice cand from pc2 and add it
+      pc1.addIceCandidate(result.candidate)
+        .then(
+            () => onAddIceCandidateSuccess(pc1),
+            err => onAddIceCandidateError(pc1, err, result.candidate)
+        );
+    }
+  };
+
+  websocket.onclose = () => {
+    completeWS();
+  }
 };
+
+completeWS();
 
 async function createStream() {
   if (leftVideo.captureStream) {

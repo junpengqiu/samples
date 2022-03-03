@@ -30,7 +30,7 @@ const serversEmpty = {
 };
 
 const WSROOT = "wss://junpengqiu.com/qrgank/";
-var websocket = new WebSocket(WSROOT);
+var websocket;
 var sessionID;
 
 function onAddIceCandidateError(pc, error, candidate) {
@@ -69,14 +69,9 @@ function submitSessionID() {
   let toPass = {};
   toPass.type = "session-id-submit";
   toPass.sessionID = sessionID;
-  sessionIDInput.disabled = true;
-  sessionIDSubmit.disabled = true;
+  if(getName() == 'pc2') {
+    sessionIDInput.disabled = true;
+    sessionIDSubmit.disabled = true;
+  }
   websocket.send(JSON.stringify(toPass));
 }
-
-websocket.onclose = () => {
-  console.log('socket closed, resubmitting sessionID');
-  websocket = new WebSocket(WSROOT);
-  submitSessionID();
-  console.log('submit success');
-};
