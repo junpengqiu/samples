@@ -67,7 +67,11 @@ var completeWS = function() {
       pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
     } else if (result.type =="candidate") {
       // ws: listen for ice cand from pc2 and add it
-      pc2.addIceCandidate(result.candidate)
+      let toAdd = new IceCandidate({
+        candidate: result.candidate.candidate,
+        sdpMLineIndex: result.candidate.sdpMLineIndex,
+      });
+      pc2.addIceCandidate(toAdd)
       .then(
           () => onAddIceCandidateSuccess(pc2),
           err => onAddIceCandidateError(pc2, err, result.candidate)

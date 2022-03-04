@@ -58,7 +58,11 @@ var completeWS = function() {
     } else if (result.type =="candidate") {
       // ws: listen for ice cand from pc2 and add it
       console.log(`received candidate:\n ${JSON.stringify(result.candidate)}`);
-      pc1.addIceCandidate(result.candidate)
+      let toAdd = new IceCandidate({
+        candidate: result.candidate.candidate,
+        sdpMLineIndex: result.candidate.sdpMLineIndex,
+      });
+      pc1.addIceCandidate(toAdd)
         .then(
             () => onAddIceCandidateSuccess(pc1),
             err => onAddIceCandidateError(pc1, err, result.candidate)

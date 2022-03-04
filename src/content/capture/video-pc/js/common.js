@@ -80,3 +80,5 @@ function submitSessionID() {
   }
   websocket.send(JSON.stringify(toPass));
 }
+
+const IceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
