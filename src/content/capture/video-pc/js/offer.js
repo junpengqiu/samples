@@ -57,6 +57,7 @@ var completeWS = function() {
       pc1.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
     } else if (result.type =="candidate") {
       // ws: listen for ice cand from pc2 and add it
+      console.log(`received candidate:\n ${JSON.stringify(result.candidate)}`);
       pc1.addIceCandidate(result.candidate)
         .then(
             () => onAddIceCandidateSuccess(pc1),
