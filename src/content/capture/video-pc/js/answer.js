@@ -18,11 +18,17 @@ let startTime;
 const sessionIDInput = document.getElementById("session-id");
 const sessionIDSubmit = document.getElementById("submit-session-id");
 
+if (isDemo) {
+  sessionIDInput.value = sessionID;
+  sessionIDInput.disabled = true;
+  sessionIDSubmit.disabled = true;
+}
+
 sessionIDSubmit.onclick = () => {
   sessionIDInput.value = sessionIDInput.value.toUpperCase();
   sessionID = sessionIDInput.value;
 
-  if (sessionID == 0) {
+  if (sessionID.length == 0) {
     window.alert("session id cannot be empty");
     return;
   } 
@@ -56,6 +62,7 @@ var completeWS = function() {
       sessionIDInput.value = "";
       sessionIDInput.disabled = false;
       sessionIDSubmit.disabled = false;
+      sessionID = undefined;
     } else if (result.type == "offerDesc") {
     // ws: listen for offer desc and set it as remote desc
       call(result.stun);

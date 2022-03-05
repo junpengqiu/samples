@@ -36,7 +36,12 @@ const serversEmpty = {
 
 const WSROOT = "wss://junpengqiu.com/qrgank/";
 var websocket;
+var isDemo = window.location.hostname.includes("demo");
 var sessionID;
+
+if (isDemo) {
+  sessionID = "000000";
+}
 
 function onAddIceCandidateError(pc, error, candidate) {
   console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);

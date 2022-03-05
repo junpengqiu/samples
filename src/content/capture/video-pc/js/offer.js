@@ -28,6 +28,11 @@ var displayMediaOptions = {
   audio: false
 };
 
+function updateSessionID() {
+  document.getElementById("sessionID").textContent = sessionID;
+  document.getElementById("create-stream").disabled = false;
+}
+
 var completeWS = function() {
   websocket = new WebSocket(WSROOT);
   websocket.onopen = () => {
@@ -35,6 +40,7 @@ var completeWS = function() {
 
     if (sessionID) {
       submitSessionID();
+      updateSessionID();
     } else {
       websocket.send(JSON.stringify({
         type: "register"
@@ -47,8 +53,7 @@ var completeWS = function() {
     let result = JSON.parse(event.data);
     if (result.type == "registered") {
       sessionID = result.sessionID;
-      document.getElementById("sessionID").textContent = sessionID;
-      document.getElementById("create-stream").disabled = false;
+      updateSessionID();
     } else if (result.type == "answerDesc") {
       // ws: listen for answer desc and set it as remote desc
       console.log(`Answer from pc2:
