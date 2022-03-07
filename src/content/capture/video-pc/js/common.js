@@ -82,6 +82,8 @@ function submitSessionID() {
   if(getName() == 'pc2') {
     sessionIDInput.disabled = true;
     sessionIDSubmit.disabled = true;
+  } else {
+    toPass.hard = true;
   }
   websocket.send(JSON.stringify(toPass));
 }
