@@ -13,7 +13,7 @@
     <meta name="description" content="WebRTC code samples">
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
     <meta itemprop="description" content="Client-side Junpeng Qiu Cloud Screen Share Meeting code samples (sender side)">
-    <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+    <meta itemprop="image" content="./images/webrtc-icon-192x192.png">
     <meta itemprop="name" content="Junpeng Qiu Cloud Screen Share Meeting code samples">
     <meta name="mobile-web-app-capable" content="yes">
     <meta id="theme-color" name="theme-color" content="#ffffff">
@@ -22,7 +22,7 @@
 
     <title>Junpeng Qiu Cloud Screen Share</title>
 
-    <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+    <link rel="icon" sizes="192x192" href="./images/webrtc-icon-192x192.png">
     <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../../../css/main.css"/>
     <link rel="stylesheet" href="css/main.css"/>
@@ -32,7 +32,7 @@
 <body>
 
 <div id="container">
-    <h1>Junpeng Qiu Cloud Screen Share Meeting</h1>
+    <h1><a href="https://www.linkedin.com/in/junpeng-qiu-327869141/" target="_blank">Junpeng Qiu</a>'s Cloud Screen Share Meeting</h1>
 
     <video id="leftVideo" style="width: 100%;" playsinline controls muted>
         <!-- NB CORS: https://bugzilla.mozilla.org/show_bug.cgi?id=1177793 -->
@@ -58,13 +58,13 @@
         <label for="stun-empty">Empty</label>
     </div>
 
-    <p>Session ID:</p>
+    <p>Please inform the other user the 6-digt ID below/请将下列六位数告诉需要加入观看云享屏幕的用户:</p>
     <p id="sessionID"> </p>
-    <button id="create-stream" disabled> Create Stream </button>
+    <button id="create-stream" disabled> Sharescreen/分享屏幕 </button>
 
 </div>
 
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="./js/adapter.js"></script>
 <script src="js/common.js"></script>
 <script src="js/offer.js"></script>
 
