@@ -30,7 +30,6 @@ var displayMediaOptions = {
 
 function updateSessionID() {
   document.getElementById("sessionID").textContent = sessionID;
-  document.getElementById("create-stream").disabled = false;
 }
 
 var completeWS = function() {
@@ -54,6 +53,9 @@ var completeWS = function() {
     if (result.type == "registered") {
       sessionID = result.sessionID;
       updateSessionID();
+    } else if (result.type == "other-client-joined") {
+      document.getElementById("create-stream").textContent = "Share Screen/共享屏幕";
+      document.getElementById("create-stream").disabled = false;
     } else if (result.type == "answerDesc") {
       // ws: listen for answer desc and set it as remote desc
       console.log(`Answer from pc2:
@@ -134,6 +136,7 @@ async function call() {
     console.log('pc1 createOffer start');
     pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
     calledAtLeastOnce = true;
+    document.getElementById("create-stream").textContent = "Change Screen/切换屏幕";
   } else {
     let newTrack = stream.getTracks()[0]
     senders[0].replaceTrack(newTrack);

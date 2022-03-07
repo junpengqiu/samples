@@ -40,8 +40,14 @@
 </div>
 
 <div id="container">
+
+    <p>Please inform the other user the 6-digt ID below/请将下列六位数告诉需要加入观看云享屏幕的用户:</p>
+    <p id="sessionID"> </p>
+    <button id="create-stream" disabled> waiting for the other user to join/正在等待另一位用户加入 </button>
+
     <div>
         <h3>Select your stun server:</h3>
+        <h3>do NOT touch the options below/请勿触碰以下选项:</h3>
     </div>
     <div>
         <input type="radio" id="stun-google"
@@ -57,10 +63,6 @@
             name="stun-choice" value="empty">
         <label for="stun-empty">Empty</label>
     </div>
-
-    <p>Please inform the other user the 6-digt ID below/请将下列六位数告诉需要加入观看云享屏幕的用户:</p>
-    <p id="sessionID"> </p>
-    <button id="create-stream" disabled> Sharescreen/分享屏幕 </button>
 
 </div>
 
