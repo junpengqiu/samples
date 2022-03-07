@@ -14,6 +14,7 @@ const rightVideo = document.getElementById('rightVideo');
 let pc2;
 
 let startTime;
+var joinedAtLeastOnce = false;
 
 const sessionIDInput = document.getElementById("session-id");
 const sessionIDSubmit = document.getElementById("submit-session-id");
@@ -72,6 +73,8 @@ var completeWS = function() {
       pc2.setRemoteDescription(result.desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
       console.log('pc2 createAnswer start');
       pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
+    } else if (result.type == "session-id-confirm") {
+      joinedAtLeastOnce = true;
     } else if (result.type =="candidate") {
       // ws: listen for ice cand from pc2 and add it
       let toAdd = result.candidate ? new IceCandidate({

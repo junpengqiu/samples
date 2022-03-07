@@ -82,9 +82,11 @@ function submitSessionID() {
   if(getName() == 'pc2') {
     sessionIDInput.disabled = true;
     sessionIDSubmit.disabled = true;
+    toPass.hard = joinedAtLeastOnce;
   } else {
     toPass.hard = true;
   }
+  toPass.hard = true;
   websocket.send(JSON.stringify(toPass));
 }
 
