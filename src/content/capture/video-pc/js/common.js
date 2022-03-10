@@ -21,6 +21,20 @@ const serversGoogleStun = {
   iceCandidatePoolSize: 10,
 };
 
+const serversViagenie = {
+  iceServers: [
+    {
+      urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+    },
+    {
+      url: 'turn:numb.viagenie.ca',
+      credential: 'muazkh',
+      username: 'webrtc@live.com'
+    },
+  ],
+  iceCandidatePoolSize: 10,
+};
+
 const serversStunOrg = {
   iceServers: [
     {
@@ -54,6 +68,8 @@ function getStunChoice() {
     return serversGoogleStun;
   }else if (choice == "stunorg"){
     return serversStunOrg;
+  }else if (choice == "viagenie"){
+    return serversViagenie;
   } else {
     return serversEmpty;
   }

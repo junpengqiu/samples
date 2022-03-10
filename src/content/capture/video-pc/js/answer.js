@@ -49,7 +49,7 @@ var completeWS = function() {
   };
 
   websocket.onerror = (event) => {
-    document.getElementById("log").textContent = event;
+    document.getElementById("log").textContent = JSON.stringify(event);
   };
 
   websocket.onclose = () => {
