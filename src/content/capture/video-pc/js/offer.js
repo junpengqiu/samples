@@ -25,7 +25,9 @@ var displayMediaOptions = {
   video: {
     cursor: "always"
   },
-  audio: false
+  audio: {
+    restrictOwnAudio: false,
+  }
 };
 
 function updateSessionID() {
