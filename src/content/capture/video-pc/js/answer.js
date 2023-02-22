@@ -125,6 +125,22 @@ function call(stun) {
   pc2.onicecandidate = e => onIceCandidate(pc2, e);
   pc2.oniceconnectionstatechange = e => onIceStateChange(pc2, e);
   pc2.ontrack = gotRemoteStream;
+  
+  pc2.ondatachannel = (event) => {
+    dataChannel = event.channel;
+    
+    dataChannel.onopen = (event) => {
+      console.log("Data channel opened");
+    };
+    
+    dataChannel.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    
+    dataChannel.onclose = (event) => {
+      console.log("Data channel closed");
+    };
+  };
 }
 
 function onCreateSessionDescriptionError(error) {

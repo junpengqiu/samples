@@ -130,6 +130,25 @@ async function call() {
     // pc2.onicecandidate = e => onIceCandidate(pc2, e);
     pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
 
+    dataChannel = pc1.createDataChannel("channel1"); 
+		
+    dataChannel.onerror = function (error) { 
+      console.log("Ooops...error:", error); 
+    };
+  
+    //when we receive a message from the other peer, display it on the screen 
+    dataChannel.onopen = (event) => {
+      console.log("Data channel opened");
+    };
+    
+    dataChannel.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    
+    dataChannel.onclose = (event) => {
+      console.log("Data channel closed");
+    };
+
     stream.getTracks().forEach(track => {
       senders.push(pc1.addTrack(track, stream));
     });

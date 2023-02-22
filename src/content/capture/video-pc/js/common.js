@@ -105,5 +105,5 @@ function submitSessionID() {
   toPass.hard = true;
   websocket.send(JSON.stringify(toPass));
 }
-
+var dataChannel;
 const IceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
