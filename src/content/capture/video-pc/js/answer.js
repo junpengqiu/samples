@@ -105,6 +105,18 @@ rightVideo.onresize = () => {
   }
 };
 
+rightVideo.addEventListener('mousemove', e => {
+  // Get the bounding rectangle of the video element
+  const rect = rightVideo.getBoundingClientRect();
+
+  // Calculate the position of the mouse relative to the video element
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // Log the mouse position on the video element
+  console.log(`Mouse position on video element: x = ${x}, y = ${y}`);
+});
+
 function call(stun) {
   console.log('Starting call');
   startTime = window.performance.now();
