@@ -16,6 +16,8 @@ var senders = [];
 var screenWidth = 3440;
 var screenHeight = 1440;
 
+var posWS;
+
 let pc1;
 const offerOptions = {
   offerToReceiveAudio: 1,
@@ -35,6 +37,10 @@ var displayMediaOptions = {
 
 function updateSessionID() {
   document.getElementById("sessionID").textContent = sessionID;
+}
+
+var completePosWS = function() {
+  posWS = new WebSocket('ws://localhost:8080');
 }
 
 var completeWS = function() {
@@ -88,6 +94,7 @@ var completeWS = function() {
 };
 
 completeWS();
+completePosWS();
 
 async function createStream() {
   if (leftVideo.captureStream) {
@@ -145,6 +152,11 @@ async function call() {
     };
     
     dataChannel.onmessage = (event) => {
+
+      if (!(posWS && posWS.readyState === WebSocket.OPEN)) {
+        return;
+      }
+
       let msg = event.data;
       if (msg.length > 0 && msg[0] === 'm') {
         let posPart = msg.substr(1);
@@ -152,7 +164,9 @@ async function call() {
         let y = posPart.split(';')[1];
         x = Number.parseFloat(x) * screenWidth;
         y = Number.parseFloat(y) * screenHeight;
-        console.log(`position: ${x}, ${y}`)
+        console.log(`position: ${x}, ${y}`);
+
+        posWS.send(`m${x};${y}`)
       }
     };
     
