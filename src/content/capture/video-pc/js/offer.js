@@ -13,6 +13,9 @@ let stream;
 var calledAtLeastOnce = false;
 var senders = [];
 
+var screenWidth = 3440;
+var screenHeight = 1440;
+
 let pc1;
 const offerOptions = {
   offerToReceiveAudio: 1,
@@ -142,7 +145,15 @@ async function call() {
     };
     
     dataChannel.onmessage = (event) => {
-      console.log("Received message:", event.data);
+      let msg = event.data;
+      if (msg.length > 0 && msg[0] === 'm') {
+        let posPart = msg.substr(1);
+        let x = posPart.split(';')[0];
+        let y = posPart.split(';')[1];
+        x = Number.parseFloat(x) * screenWidth;
+        y = Number.parseFloat(y) * screenHeight;
+        console.log(`position: ${x}, ${y}`)
+      }
     };
     
     dataChannel.onclose = (event) => {

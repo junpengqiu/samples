@@ -112,9 +112,13 @@ rightVideo.addEventListener('mousemove', e => {
   // Calculate the position of the mouse relative to the video element
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
+  const width = rect.width;
+  const height = rect.height;
 
-  // Log the mouse position on the video element
-  console.log(`Mouse position on video element: x = ${x}, y = ${y}`);
+  // Log the mouse position to remote peer connection
+  if (dataChannel && dataChannel.readyState === 'open') {
+    dataChannel.send(`m${x/width};${y/height}`);
+  }
 });
 
 function call(stun) {
