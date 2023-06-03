@@ -26,6 +26,30 @@ const offerOptions = {
 
 let startTime;
 
+document.getElementById("resolution").innerText = screenWidth + "x" + screenHeight;
+var onUpdateResolutionBtnClick = function() {
+  let input = prompt("Enter the new resolution in format 'widthxheight':");
+  
+  // User clicked 'cancel'
+  if (input === null) {
+    return;
+  }
+
+  // Trimming the input to remove extra spaces
+  input = input.trim();
+
+  // Validating the user input
+  var pattern = /^(\d+)x(\d+)$/;
+  var match = input.match(pattern);
+  if (!match) {
+    alert("Invalid resolution. Please enter in the format 'widthxheight'.");
+  } else {
+    screenWidth = match[1];
+    screenHeight = match[2];
+    document.getElementById("resolution").innerText = screenWidth + "x" + screenHeight;
+  }
+};
+
 var displayMediaOptions = {
   video: {
     cursor: "always"
@@ -41,6 +65,15 @@ function updateSessionID() {
 
 var completePosWS = function() {
   posWS = new WebSocket('ws://localhost:8080');
+  posWS.onerror = event => {
+    document.getElementById("retry-cursor-connect").hidden = false;
+  };
+  posWS.onclose = event => {
+    document.getElementById("retry-cursor-connect").hidden = false;
+  };
+  posWS.onopen = event => {
+    document.getElementById("retry-cursor-connect").hidden = true;
+  };
 }
 
 var completeWS = function() {
@@ -95,6 +128,10 @@ var completeWS = function() {
 
 completeWS();
 completePosWS();
+
+var onRetryCursorConnectBtnClick = function() {
+  completePosWS();
+};
 
 async function createStream() {
   if (leftVideo.captureStream) {

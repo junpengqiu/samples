@@ -45,6 +45,14 @@
     <p id="sessionID"> </p>
     <button id="create-stream" disabled> waiting for the other user to join/正在等待另一位用户加入 </button>
 
+    <div style="padding-top: 10px">
+      <span id="resolution"> </span>  <button id="update-resolution" onclick="onUpdateResolutionBtnClick()"> Update Shared Screen Resolution / 更改当前分享视频像素 </button>
+    </div>
+    
+    <div style="padding-top: 10px">
+      <button id="retry-cursor-connect" onclick="onRetryCursorConnectBtnClick()" hidden> Retry Guide Cursor Connect / 尝试重新连接指导性光标 </button>
+    </div>
+
     <div>
         <h3>Select your stun server:</h3>
         <h3>do NOT touch the options below/请勿触碰以下选项:</h3>
