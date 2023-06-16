@@ -107,3 +107,6 @@ function submitSessionID() {
 }
 var dataChannel;
 const IceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate;
+document.querySelector('video').onpause = function() {
+  document.querySelector('video').play();
+};
