@@ -210,3 +210,10 @@ function onIceStateChange(pc, event) {
 function getName(pc) {
   return 'pc2';
 }
+
+rightVideo.onplay = function() {
+  let toPass = {};
+  toPass.type = "report";
+  toPass.report = "video-stream-success"
+  websocket.send(JSON.stringify(toPass));
+}
