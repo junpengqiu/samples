@@ -44,11 +44,15 @@ var onUpdateResolutionBtnClick = function() {
   if (!match) {
     alert("Invalid resolution. Please enter in the format 'widthxheight'.");
   } else {
-    screenWidth = match[1];
-    screenHeight = match[2];
-    document.getElementById("resolution").innerText = screenWidth + "x" + screenHeight;
+    updateResolution(match[1], match[2]);
   }
 };
+
+var updateResolution = function(width, height) {
+  screenWidth = width;
+  screenHeight = height;
+  document.getElementById("resolution").innerText = screenWidth + "x" + screenHeight;
+}
 
 var displayMediaOptions = {
   video: {
@@ -73,6 +77,20 @@ var completePosWS = function() {
   };
   posWS.onopen = event => {
     document.getElementById("retry-cursor-connect").hidden = true;
+    posWS.send("r");
+  };
+  posWS.onmessage = function(event) {
+    var message = event.data;
+
+    // check if message starts with 'r'
+    if (message[0] === 'r') {
+      let dimensions = message.substring(1).split('x');
+
+      let width = parseInt(dimensions[0], 10);
+      let height = parseInt(dimensions[1], 10);
+
+      updateResolution(width, height);
+    }
   };
 }
 
