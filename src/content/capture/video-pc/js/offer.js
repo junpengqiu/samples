@@ -15,6 +15,7 @@ var senders = [];
 
 var screenWidth = 3440;
 var screenHeight = 1440;
+document.getElementById('resolution').parentElement.hidden = true;
 
 var posWS;
 
@@ -71,12 +72,15 @@ var completePosWS = function() {
   posWS = new WebSocket('ws://localhost:8080');
   posWS.onerror = event => {
     document.getElementById("retry-cursor-connect").hidden = false;
+    document.getElementById('resolution').parentElement.hidden = true;
   };
   posWS.onclose = event => {
     document.getElementById("retry-cursor-connect").hidden = false;
+    document.getElementById('resolution').parentElement.hidden = true;
   };
   posWS.onopen = event => {
     document.getElementById("retry-cursor-connect").hidden = true;
+    document.getElementById('resolution').parentElement.hidden = false;
     posWS.send("r");
   };
   posWS.onmessage = function(event) {
