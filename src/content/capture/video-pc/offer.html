@@ -26,6 +26,7 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../../../css/main.css"/>
     <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/disclaimer.css"/>
 
 </head>
 
@@ -78,9 +79,30 @@
 
 </div>
 
+<!-- The Disclaimer Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <h2>Disclaimer:</h2>
+    <p>By using this website and software, you hereby agree and acknowledge that:</p>
+    <p>All screen and mouse stream data is transmitted directly between users through WebRTC, an open-source project that provides browsers and mobile applications with Real-Time Communications capabilities via simple APIs. Our server does not store or process this data.</p>
+    <p>Our server solely acts as a signaling server for WebRTC, hosts static content, and collects some analytics information.</p>
+    <p>We respect your privacy and do not collect any personal identifiable information, including your IP address or personal data, without explicit consent.</p>
+    <p>If you do not agree with these terms, you are not permitted to use this website or software.</p>
+    <br/>
+    <h2>免责声明：</h2>
+    <p>通过使用本网站和软件，您在此同意并承认：</p>
+    <p>所有屏幕和鼠标流数据都通过WebRTC直接在用户之间传输，WebRTC是一个开源项目，通过简单的API为浏览器和移动应用程序提供实时通信功能。我们的服务器不存储或处理这些数据。</p>
+    <p>我们的服务器仅作为WebRTC的信号服务器，托管静态内容，并收集一些分析信息。</p>
+    <p>我们尊重您的隐私，并且在没有明确同意的情况下，不会收集任何可识别个人身份的信息，包括您的IP地址或个人数据。</p>
+    <p>如果您不同意这些条款，您不得使用本网站或软件。</p>
+    <button id="acceptBtn">I Acknowledge / 我同意</button>
+  </div>
+</div>
+
 <script src="./js/adapter.js"></script>
 <script src="js/common.js"></script>
 <script src="js/offer.js"></script>
+<script src="./js/disclaimer.js"></script>
 
 </body>
 </html>
