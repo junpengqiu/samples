@@ -69,7 +69,7 @@ function updateSessionID() {
 }
 
 var completePosWS = function() {
-  posWS = new WebSocket('ws://localhost:8080');
+  posWS = new WebSocket('ws://localhost:12379');
   posWS.onerror = event => {
     document.getElementById("retry-cursor-connect").hidden = false;
     document.getElementById('resolution').parentElement.hidden = true;
